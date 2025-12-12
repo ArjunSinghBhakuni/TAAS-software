@@ -1,0 +1,9 @@
+{
+  "name": "SkillImpact",
+  "description": "AI-first SaaS platform for NGOs to manage projects, match teams, and report CSR impact transparency.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
