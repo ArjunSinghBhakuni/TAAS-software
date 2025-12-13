@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { User } from '../types';
 import { login } from '../services/authService';
 import { MOCK_USERS } from '../services/mockData';
-import { Lock, Mail, ArrowRight, Loader2, Landmark, Briefcase, Settings } from 'lucide-react';
+import { Lock, Mail, ArrowRight, Loader2, Landmark, Briefcase, Settings, GraduationCap } from 'lucide-react';
 
 interface LoginPageProps {
   onLoginSuccess: (user: User) => void;
@@ -17,7 +17,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   const handleLogin = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     setLoading(true);
-    const { user } = await login(email, password);
+    // login service only accepts email and returns Promise<User | null>
+    const user = await login(email);
     if (user) onLoginSuccess(user);
     setLoading(false);
   };
@@ -93,17 +94,18 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
              <div className="grid grid-cols-1 gap-3">
                 {MOCK_USERS.map((user) => (
                    <button
-                     key={user.user_id}
+                     key={user.id}
                      onClick={() => { setEmail(user.email); setPassword('demo'); }}
                      className="flex items-center gap-4 p-3 border border-slate-200 rounded-lg hover:border-teal-500 hover:bg-teal-50 transition-all text-left"
                    >
                       <div className="p-2 bg-slate-100 rounded text-slate-600">
-                         {user.role === 'CSR_PARTNER' ? <Briefcase size={16} /> : 
-                          user.role === 'GOVT_OFFICER' ? <Landmark size={16} /> : <Settings size={16} />}
+                         {user.role === 'CSR_USER' ? <Briefcase size={16} /> : 
+                          user.role === 'GOVT_USER' ? <Landmark size={16} /> : 
+                          <Settings size={16} />}
                       </div>
                       <div>
                          <p className="text-sm font-bold text-slate-900">{user.role.replace('_', ' ')}</p>
-                         <p className="text-xs text-slate-500">{user.org_id}</p>
+                         <p className="text-xs text-slate-500">{user.organization}</p>
                       </div>
                    </button>
                 ))}
